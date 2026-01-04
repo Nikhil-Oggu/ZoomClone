@@ -436,7 +436,7 @@ export default function VideoMeetComponent() {
         socketRef.current.emit('chat-message', message, username)
         setMessage("");
 
-        // this.setState({ message: "", sender: username })
+       
     }
 
     
