@@ -26,7 +26,7 @@ const start = async () => {
         console.log("Starting server...");
 
         const connectionDb = await mongoose.connect(
-          "mongodb+srv://nikhiloggu_db_user:iMkpxbVqUWnDtxyx@zerodhacluster.x4xuo9r.mongodb.net/zoom"
+          "mongodb+srv://Nikhil:ii8dnTFTDIHvh3TC@zerodhaclonecluster.mnue4ed.mongodb.net/Apna-video"
         );
 
         console.log(`MONGO Connected DB Host: ${connectionDb.connection.host}`);

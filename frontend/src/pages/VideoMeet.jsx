@@ -121,21 +121,29 @@ export default function VideoMeetComponent() {
         }
     };
 
-    useEffect(() => {
-        if (video !== undefined && audio !== undefined) {
-            getUserMedia();
-            console.log("SET STATE HAS ", video, audio);
+    // useEffect(() => {
+    //     if (video !== undefined && audio !== undefined) {
+    //         getUserMedia();
+    //         console.log("SET STATE HAS ", video, audio);
 
-        }
+    //     }
 
 
-    }, [video, audio])
-    let getMedia = () => {
-        setVideo(videoAvailable);
-        setAudio(audioAvailable);
-        connectToSocketServer();
+    // }, [video, audio])
+   let getMedia = async () => {
+    const stream = await navigator.mediaDevices.getUserMedia({
+        video: videoAvailable,
+        audio: audioAvailable
+    });
 
-    }
+    window.localStream = stream;
+    localVideoref.current.srcObject = stream;
+
+    setVideo(true);
+    setAudio(true);
+
+    connectToSocketServer();
+};
 
 
 
@@ -382,14 +390,31 @@ export default function VideoMeetComponent() {
         return Object.assign(stream.getVideoTracks()[0], { enabled: false })
     }
 
-    let handleVideo = () => {
-        setVideo(!video);
-        // getUserMedia();
-    }
-    let handleAudio = () => {
-        setAudio(!audio)
-        // getUserMedia();
-    }
+    // let handleVideo = () => {
+    //     setVideo(!video);
+    //     // getUserMedia();
+    // }
+    // let handleAudio = () => {
+    //     setAudio(!audio)
+    //     // getUserMedia();
+    // }
+
+   let handleVideo = () => {
+    const track = window.localStream?.getVideoTracks()[0];
+    if (!track) return;
+
+    track.enabled = !track.enabled;
+    setVideo(track.enabled);
+};
+
+let handleAudio = () => {
+    const track = window.localStream?.getAudioTracks()[0];
+    if (!track) return;
+
+    track.enabled = !track.enabled;
+    setAudio(track.enabled);
+};
+
 
     useEffect(() => {
         if (screen !== undefined) {
@@ -453,10 +478,12 @@ export default function VideoMeetComponent() {
 
                 <div>
 
-
-                    <h2>Enter into Lobby </h2>
+                    <div style={{padding: "10px", display: "flex", gap: "10px"}} >
+                    <h2>  Enter into Lobby </h2>
+                    </div>
+                    <div style={{padding: "10px", display: "flex", gap: "10px"}} >
                     <TextField id="outlined-basic" label="Username" value={username} onChange={e => setUsername(e.target.value)} variant="outlined" />
-                    <Button variant="contained" onClick={connect}>Connect</Button>
+                    <Button variant="contained" onClick={connect}>Connect</Button></div>
 
 
                     <div>
@@ -490,9 +517,23 @@ export default function VideoMeetComponent() {
                             </div>
 
                             <div className={styles.chattingArea}>
-                                <TextField value={message} onChange={(e) => setMessage(e.target.value)} id="outlined-basic" label="Enter Your chat" variant="outlined" />
-                                <Button variant='contained' onClick={sendMessage}>Send</Button>
-                            </div>
+  <TextField
+    fullWidth
+    value={message}
+    onChange={(e) => setMessage(e.target.value)}
+    label="Enter your chat"
+    variant="outlined"
+    size="small"
+  />
+  <Button
+    variant="contained"
+    onClick={sendMessage}
+    className={styles.sendBtn}
+  >
+    Send
+  </Button>
+</div>
+
 
 
                         </div>

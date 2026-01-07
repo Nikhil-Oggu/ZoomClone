@@ -41,7 +41,7 @@
 
 .chatRoom {
     position: absolute;
-    height: 90vh;
+    height: 100vh;
     right: 0;
     background: white;
     border-radius: 10px;
@@ -49,13 +49,31 @@
     padding-inline: 20px;
 }
 
-.chatContainer {
+/* .chatContainer {
     position: relative;
     height: 100%;
-}
+} */
 
 
 .chattingArea {
-    position: absolute;
-    bottom: 0;
+  display: flex;
+  gap: 10px;
+  padding: 12px;
+  border-top: 1px solid #e0e0e0;
+  background-color: #fff;
+}
+
+.sendBtn {
+  height: 40px;
+  min-width: 80px;
+}
+.chatContainer {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.chattingDisplay {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px;
 }
