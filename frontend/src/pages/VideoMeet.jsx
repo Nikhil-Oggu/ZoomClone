@@ -187,26 +187,39 @@ export default function VideoMeetComponent() {
   };
 
   const handleScreen = async () => {
-    if (screen) return;
-
-    const screenStream = await navigator.mediaDevices.getDisplayMedia({ video: true });
-    const screenTrack = screenStream.getVideoTracks()[0];
-
-    Object.values(connections).forEach(pc => {
-      const sender = pc.getSenders().find(s => s.track?.kind === "video");
-      sender && sender.replaceTrack(screenTrack);
-    });
-
-    screenTrack.onended = () => {
+    if (screen) {
+      // Stop screen sharing
       const camTrack = window.localStream.getVideoTracks()[0];
       Object.values(connections).forEach(pc => {
         const sender = pc.getSenders().find(s => s.track?.kind === "video");
-        sender && sender.replaceTrack(camTrack);
+        if (sender) sender.replaceTrack(camTrack);
       });
       setScreen(false);
-    };
+      return;
+    }
 
-    setScreen(true);
+    try {
+      const screenStream = await navigator.mediaDevices.getDisplayMedia({ video: true });
+      const screenTrack = screenStream.getVideoTracks()[0];
+
+      Object.values(connections).forEach(pc => {
+        const sender = pc.getSenders().find(s => s.track?.kind === "video");
+        if (sender) sender.replaceTrack(screenTrack);
+      });
+
+      screenTrack.onended = () => {
+        const camTrack = window.localStream.getVideoTracks()[0];
+        Object.values(connections).forEach(pc => {
+          const sender = pc.getSenders().find(s => s.track?.kind === "video");
+          if (sender) sender.replaceTrack(camTrack);
+        });
+        setScreen(false);
+      };
+
+      setScreen(true);
+    } catch (err) {
+      console.log("Screen share error:", err);
+    }
   };
 
   const sendMessage = () => {
