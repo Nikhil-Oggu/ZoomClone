@@ -68,57 +68,63 @@ export default function Authentication() {
 
     return (
         <ThemeProvider theme={defaultTheme}>
-            <Grid container component="main" sx={{ height: '100vh' }}>
+            <Box sx={{
+                height: '100vh',
+                background: 'linear-gradient(135deg, #010430 0%, #1a0f4d 100%)',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                padding: '20px'
+            }}>
                 <CssBaseline />
-                <Grid
-                    item
-                    xs={false}
-                    sm={4}
-                    md={7}
-                    sx={{
-                        backgroundImage: 'url(https://source.unsplash.com/random?wallpapers)',
-                        backgroundRepeat: 'no-repeat',
-                        backgroundColor: (t) =>
-                            t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'center',
-                    }}
-                />
-                <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-                    <Box
-                        sx={{
-                            my: 8,
-                            mx: 4,
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                        }}
-                    >
-                        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+                <Paper elevation={6} sx={{
+                    padding: '40px',
+                    borderRadius: '15px',
+                    width: '100%',
+                    maxWidth: '400px',
+                    background: 'rgba(255, 255, 255, 0.95)'
+                }}>
+                    <Box sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                    }}>
+                        <Avatar sx={{ m: 1, bgcolor: 'secondary.main', width: 56, height: 56 }}>
                             <LockOutlinedIcon />
                         </Avatar>
+                        <Typography component="h1" variant="h5" sx={{ mb: 3, color: '#010430', fontWeight: 600 }}>
+                            QuickCall
+                        </Typography>
 
-
-                        <div>
-                            <Button variant={formState === 0 ? "contained" : ""} onClick={() => { setFormState(0) }}>
+                        <Box sx={{ display: 'flex', gap: '10px', mb: 3, width: '100%' }}>
+                            <Button 
+                                variant={formState === 0 ? "contained" : "outlined"} 
+                                onClick={() => setFormState(0)}
+                                fullWidth
+                            >
                                 Sign In
                             </Button>
-                            <Button variant={formState === 1 ? "contained" : ""} onClick={() => { setFormState(1) }}>
+                            <Button 
+                                variant={formState === 1 ? "contained" : "outlined"} 
+                                onClick={() => setFormState(1)}
+                                fullWidth
+                            >
                                 Sign Up
                             </Button>
-                        </div>
+                        </Box>
 
-                        <Box component="form" noValidate sx={{ mt: 1 }}>
+                        <Box component="form" noValidate sx={{ mt: 1, width: '100%' }}>
                             {formState === 1 ? <TextField
                                 margin="normal"
                                 required
                                 fullWidth
-                                id="username"
+                                id="name"
                                 label="Full Name"
-                                name="username"
+                                name="name"
                                 value={name}
                                 autoFocus
                                 onChange={(e) => setName(e.target.value)}
+                                variant="outlined"
                             /> : <></>}
 
                             <TextField
@@ -129,9 +135,9 @@ export default function Authentication() {
                                 label="Username"
                                 name="username"
                                 value={username}
-                                autoFocus
+                                autoFocus={formState === 0}
                                 onChange={(e) => setUsername(e.target.value)}
-
+                                variant="outlined"
                             />
                             <TextField
                                 margin="normal"
@@ -142,11 +148,11 @@ export default function Authentication() {
                                 value={password}
                                 type="password"
                                 onChange={(e) => setPassword(e.target.value)}
-
                                 id="password"
+                                variant="outlined"
                             />
 
-                            <p style={{ color: "red" }}>{error}</p>
+                            {error && <Typography sx={{ color: "red", mt: 1, fontSize: '14px' }}>{error}</Typography>}
 
                             <Button
                                 type="button"
@@ -155,16 +161,15 @@ export default function Authentication() {
                                 sx={{ mt: 3, mb: 2 }}
                                 onClick={handleAuth}
                             >
-                                {formState === 0 ? "Login " : "Register"}
+                                {formState === 0 ? "Login" : "Register"}
                             </Button>
 
                         </Box>
                     </Box>
-                </Grid>
-            </Grid>
+                </Paper>
+            </Box>
 
             <Snackbar
-
                 open={open}
                 autoHideDuration={4000}
                 message={message}

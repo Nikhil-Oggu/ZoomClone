@@ -21,51 +21,59 @@ function HomeComponent() {
 
     return (
         <>
-
             <div className="navBar">
-
                 <div style={{ display: "flex", alignItems: "center" }}>
-
-                    <h2>Apna Video Call</h2>
+                    <h2>QuickCall</h2>
                 </div>
 
-                <div style={{ display: "flex", alignItems: "center" }}>
-                    <IconButton onClick={
-                        () => {
-                            navigate("/history")
-                        }
-                    }>
-                        <RestoreIcon />
-                    </IconButton>
-                    <p>History</p>
+                <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                    <Button 
+                        onClick={() => navigate("/history")}
+                        startIcon={<RestoreIcon />}
+                        sx={{ color: "white", textTransform: "none", fontSize: "16px" }}
+                    >
+                        History
+                    </Button>
 
-                    <Button onClick={() => {
-                        localStorage.removeItem("token")
-                        navigate("/auth")
-                    }}>
+                    <Button 
+                        onClick={() => {
+                            localStorage.removeItem("token")
+                            navigate("/auth")
+                        }}
+                        sx={{ color: "white", textTransform: "none", fontSize: "16px" }}
+                    >
                         Logout
                     </Button>
                 </div>
-
-
             </div>
 
-
             <div className="meetContainer">
-                <div className="leftPanel">
-                    <div>
-                        <h2>Providing Quality Video Call Just Like Quality Education</h2>
-
-                        <div style={{padding: "10px", display: "flex", gap: "10px"}}>
-
-                            <TextField onChange={e => setMeetingCode(e.target.value)} id="outlined-basic" label="Meeting Code" variant="outlined" />
-                            <Button onClick={handleJoinVideoCall} variant='contained'>Join</Button>
-
+                <div className="meetContent">
+                    <div className="meetCard">
+                        <h1>Start or Join a Meeting</h1>
+                        <p>Enter a meeting code to join or create a new meeting</p>
+                        
+                        <div className="meetInputGroup">
+                            <TextField 
+                                onChange={e => setMeetingCode(e.target.value)} 
+                                placeholder="Enter meeting code"
+                                variant="outlined"
+                                fullWidth
+                                size="medium"
+                            />
+                            <Button 
+                                onClick={handleJoinVideoCall} 
+                                variant='contained'
+                                size="large"
+                                sx={{ fontSize: "16px" }}
+                            >
+                                Join
+                            </Button>
                         </div>
                     </div>
                 </div>
-                <div className='rightPanel'>
-                    <img srcSet='/logo3.png' alt="" />
+                <div className='meetImage'>
+                    <img srcSet='/logo3.png' alt="Video Call" />
                 </div>
             </div>
         </>
